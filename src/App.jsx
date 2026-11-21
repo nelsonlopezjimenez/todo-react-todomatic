@@ -19,36 +19,39 @@ function App(props) {
   const listHeadingRef = useRef(null);
 
   function toggleTaskCompleted(id) {
-    const updatedTasks = tasks.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
-        return { ...task, completed: !task.completed };
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        // if this task has the same ID as the edited task
+        if (id === task.id) {
+          // use object spread to make a new object
+          // whose `completed` prop has been inverted
+          return { ...task, completed: !task.completed };
+        }
+        return task;
+      }),
+    );
   }
 
   function deleteTask(id) {
-    const remainingTasks = tasks.filter((task) => id !== task.id);
     // The deleted task's buttons are gone, so move focus to the list heading
-    flushSync(() => setTasks(remainingTasks));
+    flushSync(() =>
+      setTasks((prevTasks) => prevTasks.filter((task) => id !== task.id)),
+    );
     listHeadingRef.current.focus();
   }
 
   function editTask(id, newName) {
-    const editedTaskList = tasks.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // Copy the task and update its name
-        return { ...task, name: newName };
-      }
-      // Return the original task if it's not the edited task
-      return task;
-    });
-    setTasks(editedTaskList);
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        // if this task has the same ID as the edited task
+        if (id === task.id) {
+          // Copy the task and update its name
+          return { ...task, name: newName };
+        }
+        // Return the original task if it's not the edited task
+        return task;
+      }),
+    );
   }
 
   const taskList = tasks
@@ -75,8 +78,10 @@ function App(props) {
   ));
 
   function addTask(name) {
+    // Create the task outside the updater: updaters must be pure,
+    // and nanoid() returns a different value on every call
     const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
-    setTasks([...tasks, newTask]);
+    setTasks((prevTasks) => [...prevTasks, newTask]);
   }
 
   // Count unfinished tasks, whichever filter is selected
