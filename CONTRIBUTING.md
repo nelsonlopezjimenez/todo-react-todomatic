@@ -1,127 +1,95 @@
-# Contribution guide
+# Working on the project
 
-![github-profile](https://user-images.githubusercontent.com/10350960/166113119-629295f6-c282-42c9-9379-af2de5ad4338.png)
+How to set up the project and how to make changes to it.
 
-- [Ways to contribute](#ways-to-contribute)
-- [Finding an issue](#finding-an-issue)
-- [Asking for help](#asking-for-help)
-- [Pull request process](#pull-request-process)
-- [Setting up the development environment](#setting-up-the-development-environment)
-  - [Forking and cloning the project](#forking-and-cloning-the-project)
-  - [Prerequisites](#prerequisites)
-- [Signing commits](#signing-commits)
+## Setup
 
-Welcome 👋 Thank you for your interest in contributing to MDN Web Docs. We are happy to have you join us! 💖
+1. Install [Node.js](https://nodejs.org/en/) **26** (the version in [.nvmrc](.nvmrc)). npm comes with it.
+2. Clone your repository and install the dependencies:
 
-As you get started, you are in the best position to give us feedback on project areas we might have forgotten about or assumed to work well.
-These include, but are not limited to:
+   ```bash
+   git clone <your-repository-url>
+   cd todo-react-todomatic
+   npm ci
+   ```
 
-- Problems found while setting up a new developer environment
-- Gaps in our documentation
-- Bugs in our automation scripts
+3. Start the dev server with `npm run dev` and open http://localhost:3000.
 
-If anything doesn't make sense or work as expected, please open an issue and let us know!
+Use **npm only**, not yarn or pnpm: the project's lockfile is `package-lock.json`.
 
-## Setting up the development environment
+- `npm ci` installs exactly what `package-lock.json` lists. Use it after cloning or pulling.
+- `npm install <package>` adds a new package and updates `package-lock.json`. Commit both `package.json` and `package-lock.json`.
 
-This project requires [Node.js](https://nodejs.org/en/) to be installed on your local machine.
-Additionally, you should have git and GitHub access.
+## Scripts
 
-### Forking and cloning the project
+| Command           | What it does                                  |
+| ----------------- | --------------------------------------------- |
+| `npm run dev`     | Start the dev server at http://localhost:3000 |
+| `npm run lint`    | Check the code with ESLint                    |
+| `npm run build`   | Build the production bundle into `dist/`      |
+| `npm run preview` | Serve the built `dist/` folder locally        |
 
-The first step in setting up your development environment is to [fork the repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and [clone](https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository) the repository to your local machine.
+## Branches
 
-### Prerequisites
-
-To get started, make sure you have the following:
-
-- [NVM](https://github.com/nvm-sh/nvm) or [NVM for Windows](https://github.com/coreybutler/nvm-windows)
-- [Nodejs](https://nodejs.org/en/) (Latest stable release or up to two versions back)
-- [Yarn](https://yarnpkg.com/getting-started/install)
-
-### Building the project
-
-Once you have the above installed and have the repository cloned, it is time to install the project dependencies.
-
-In the project directory, you can run the following command which runs the app in the development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+Do each change on its own branch, created from an up-to-date `main`:
 
 ```bash
-yarn start
+git switch main
+git pull
+git switch -c feature/save-tasks
 ```
 
-Launches the test runner in the interactive watch mode.
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Name branches `feature/<short-name>` for new features and `fix/<short-name>` for bug fixes.
 
-```bash
-yarn test
+## Commit messages
+
+Write the first line as `type: what the commit does`, in the imperative ("add", not "added"), in at most 72 characters:
+
+```
+fix: count unfinished tasks in the heading
+
+The heading used the number of tasks shown by the current filter,
+so on the Completed filter it counted completed tasks as remaining.
 ```
 
-The following command builds the app for production to the `build` folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Use the body to explain **why** the change was needed. Common types:
 
-```bash
-yarn build
-```
+| Type       | Use for                                          |
+| ---------- | ------------------------------------------------ |
+| `feat`     | a new feature                                    |
+| `fix`      | a bug fix                                        |
+| `refactor` | a code change that does not change behaviour     |
+| `style`    | formatting, typos, comments                      |
+| `test`     | adding or changing tests                         |
+| `docs`     | README, this guide, other documentation          |
+| `build`    | dependencies, Vite or npm configuration          |
+| `ci`       | GitHub Actions workflows                         |
+| `chore`    | anything else (repository files, cleanup)        |
 
-The build is minified and the filenames include the hashes.
-Your app is ready to be deployed!
+The project's own history follows these rules. Run `git log` to see examples.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Before you commit
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. `npm run lint` passes with no errors or warnings.
+2. `npm run build` succeeds.
+3. You tried the change in the browser, **with the keyboard too**: Tab, Enter and Space must reach and operate everything.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Code conventions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Follow the patterns already in `src/`:
 
-```bash
-yarn eject
-```
+- Function components with destructured props: `function Todo({ id, name })`.
+- Update state from the previous value: `setTasks((prevTasks) => ...)`.
+- Never change state directly; create new arrays and objects (`map`, `filter`, `...spread`).
+- Keep the accessibility features: every input has a `<label>`, buttons have
+  `visually-hidden` text that names the task, and focus moves to a sensible
+  element after Edit, Save, Cancel and Delete.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Pull requests
 
-## Ways to contribute
+Open a pull request from your branch into `main` and fill in the template:
+what you changed, why, and how you tested it.
 
-We welcome many different types of contributions including:
+## License
 
-- New features and content suggestions.
-- Identifying and filing issues.
-- Providing feedback on existing issues.
-- Engaging with the community and answering questions.
-- Contributing documentation or code.
-- Promoting the project in personal circles and social media.
-
-## Finding an issue
-
-We have issues labeled `good first issue` for new contributors and `help wanted` suitable for any contributor.
-Good first issues have extra information to help you make your first contribution a success.
-Help wanted issues are ideal when you feel a bit more comfortable with the project details.
-
-Sometimes there won't be any issues with these labels, but there is likely still something for you to work on.
-If you want to contribute but don't know where to start or can't find a suitable issue, speak to us on [Matrix](https://matrix.to/#/#mdn:mozilla.org), and we will be happy to help.
-
-Once you find an issue you'd like to work on, please post a comment saying you want to work on it.
-Something like "I want to work on this" is fine.
-Also, mention the community team using the `@mdn/community` handle to ensure someone will get back to you.
-
-## Asking for help
-
-The best way to reach us with a question when contributing is to use the following channels in the following order of precedence:
-
-- [Start a discussion](https://github.com/orgs/mdn/discussions)
-- Ask your question or highlight your discussion on [Matrix](https://matrix.to/#/#mdn:mozilla.org).
-- File an issue and tag the community team using the `@mdn/community` handle.
-
-## Pull request process
-
-The MDN Web Docs project has a well-defined pull request process which is documented in the [Pull request guidelines](https://developer.mozilla.org/en-US/docs/MDN/Community/Pull_requests).
-Make sure you read and understand this process before you start working on a pull request.
-
-## Signing commits
-
-We require all commits to be signed to verify the author's identity.
-GitHub has a detailed guide on [setting up signed commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits).
-If you get stuck, please [ask for help](#asking-for-help).
+The project is based on MDN's [todo-react](https://github.com/mdn/todo-react) and is licensed under the [Mozilla Public License 2.0](LICENSE).

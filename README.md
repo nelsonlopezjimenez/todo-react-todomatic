@@ -5,11 +5,25 @@ Sample todo app built with React and [Vite](https://vite.dev/). It is the base p
 The app comes from MDN's
 [React tutorials](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/React_getting_started)
 ([mdn/todo-react](https://github.com/mdn/todo-react)).
-The unmodified MDN version is tagged `mdn-original`:
+
+## History
+
+The project was modernized in steps. Each step has its own branch, and tags mark the important points:
+
+| Branch / tag          | What it contains                                                    |
+| --------------------- | ------------------------------------------------------------------- |
+| `mdn-original` (tag)  | The unmodified MDN code                                             |
+| `step-01-cleanup`     | npm only, Vite `base` for GitHub Pages, new README                  |
+| `step-02-upgrade`     | React 19, Vite 8, ESLint 10                                         |
+| `step-02-known-bugs` (tag) | End of step 2, before the bug fixes                            |
+| `step-03-fixes`       | Bug fixes and current React patterns (one commit per fix)           |
+| `step-03-fixed` (tag) | End of step 3                                                       |
+| `step-04-project-files` | MDN-only files removed, contributing guide, templates, favicon    |
 
 ```bash
-git checkout mdn-original   # view the original code
-git diff mdn-original       # see everything changed since
+git diff mdn-original main                       # everything changed since MDN
+git diff step-02-known-bugs step-03-fixed        # all the bug fixes
+git log --oneline step-02-known-bugs..step-03-fixed   # one commit per fix
 ```
 
 ## Getting started
@@ -17,9 +31,11 @@ git diff mdn-original       # see everything changed since
 You need [Node.js](https://nodejs.org/en/). The version is in [.nvmrc](.nvmrc). The project uses **npm**.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branches, commit messages and code conventions.
 
 ## Available scripts
 
@@ -44,4 +60,4 @@ Locally `base` is `/`.
 
 ## License
 
-This project is licensed under the [LICENSE](LICENSE).
+This project is based on MDN's code and is licensed under the [Mozilla Public License 2.0](LICENSE).
