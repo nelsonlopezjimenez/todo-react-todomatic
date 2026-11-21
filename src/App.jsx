@@ -79,8 +79,10 @@ function App(props) {
     setTasks([...tasks, newTask]);
   }
 
-  const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
-  const headingText = `${taskList.length} ${tasksNoun} remaining`;
+  // Count unfinished tasks, whichever filter is selected
+  const remainingCount = tasks.filter((task) => !task.completed).length;
+  const tasksNoun = remainingCount !== 1 ? "tasks" : "task";
+  const headingText = `${remainingCount} ${tasksNoun} remaining`;
 
   return (
     <div className="todoapp stack-large">
