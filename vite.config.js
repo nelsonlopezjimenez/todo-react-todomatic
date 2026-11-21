@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "https://mdn.github.io/todo-react/"
+  // "/" locally. The deploy workflow sets BASE_PATH to "/<repo-name>/"
+  // because GitHub Pages serves project sites from a subfolder.
+  base: process.env.BASE_PATH ?? "/",
 })

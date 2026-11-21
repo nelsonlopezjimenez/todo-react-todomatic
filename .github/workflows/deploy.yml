@@ -36,13 +36,11 @@ jobs:
           node-version-file: ".nvmrc"
           package-manager-cache: false
       - name: Run install
-        uses: borales/actions-yarn@3766bb1335b98fb13c60eaf358fe20811b730a88 # v5
-        with:
-          cmd: install
+        run: npm ci
       - name: Build production bundle
-        uses: borales/actions-yarn@3766bb1335b98fb13c60eaf358fe20811b730a88 # v5
-        with:
-          cmd: build
+        run: npm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
 
       - name: Setup pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
