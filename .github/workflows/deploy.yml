@@ -37,6 +37,8 @@ jobs:
           package-manager-cache: false
       - name: Run install
         run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Build production bundle
         run: npm run build
         env:
