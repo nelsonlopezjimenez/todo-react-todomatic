@@ -1,16 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
+import { flushSync } from "react-dom";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
 import { nanoid } from "nanoid";
-
-function usePrevious(value) {
-  const ref = useRef(null);
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
 
 const FILTER_MAP = {
   All: () => true,
@@ -23,6 +16,7 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
   const [filter, setFilter] = useState("All");
+  const listHeadingRef = useRef(null);
 
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map((task) => {
@@ -39,7 +33,9 @@ function App(props) {
 
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
-    setTasks(remainingTasks);
+    // The deleted task's buttons are gone, so move focus to the list heading
+    flushSync(() => setTasks(remainingTasks));
+    listHeadingRef.current.focus();
   }
 
   function editTask(id, newName) {
@@ -85,15 +81,6 @@ function App(props) {
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
-
-  const listHeadingRef = useRef(null);
-  const prevTaskLength = usePrevious(tasks.length);
-
-  useEffect(() => {
-    if (tasks.length < prevTaskLength) {
-      listHeadingRef.current.focus();
-    }
-  }, [tasks.length, prevTaskLength]);
 
   return (
     <div className="todoapp stack-large">
