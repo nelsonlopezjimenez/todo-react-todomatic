@@ -12,7 +12,11 @@ function Todo(props) {
   // so the element we want to focus exists on the next line.
   // https://react.dev/learn/manipulating-the-dom-with-refs#flushing-state-updates-synchronously-with-flush-sync
   function startEditing() {
-    flushSync(() => setEditing(true));
+    flushSync(() => {
+      // Start from the current name, not from what was typed last time
+      setNewName(props.name);
+      setEditing(true);
+    });
     editFieldRef.current.focus();
   }
 
