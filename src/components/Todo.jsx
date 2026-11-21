@@ -66,11 +66,11 @@ function Todo({
           type="button"
           className="btn todo-cancel"
           onClick={stopEditing}>
-          Cancel
+          Cancel{" "}
           <span className="visually-hidden">renaming {name}</span>
         </button>
         <button type="submit" className="btn btn__primary todo-edit">
-          Save
+          Save{" "}
           <span className="visually-hidden">new name for {name}</span>
         </button>
       </div>
