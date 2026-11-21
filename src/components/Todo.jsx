@@ -1,7 +1,14 @@
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
-function Todo(props) {
+function Todo({
+  id,
+  name,
+  completed,
+  toggleTaskCompleted,
+  deleteTask,
+  editTask,
+}) {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState("");
 
@@ -14,7 +21,7 @@ function Todo(props) {
   function startEditing() {
     flushSync(() => {
       // Start from the current name, not from what was typed last time
-      setNewName(props.name);
+      setNewName(name);
       setEditing(true);
     });
     editFieldRef.current.focus();
@@ -34,7 +41,7 @@ function Todo(props) {
   // working through MDN's React tutorial.
   function handleSubmit(event) {
     event.preventDefault();
-    props.editTask(props.id, newName);
+    editTask(id, newName);
     setNewName("");
     stopEditing();
   }
@@ -42,11 +49,11 @@ function Todo(props) {
   const editingTemplate = (
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="todo-label" htmlFor={`${props.id}-edit`}>
-          New name for {props.name}
+        <label className="todo-label" htmlFor={`${id}-edit`}>
+          New name for {name}
         </label>
         <input
-          id={`${props.id}-edit`}
+          id={`${id}-edit`}
           className="todo-text"
           type="text"
           value={newName}
@@ -60,11 +67,11 @@ function Todo(props) {
           className="btn todo-cancel"
           onClick={stopEditing}>
           Cancel
-          <span className="visually-hidden">renaming {props.name}</span>
+          <span className="visually-hidden">renaming {name}</span>
         </button>
         <button type="submit" className="btn btn__primary todo-edit">
           Save
-          <span className="visually-hidden">new name for {props.name}</span>
+          <span className="visually-hidden">new name for {name}</span>
         </button>
       </div>
     </form>
@@ -74,13 +81,13 @@ function Todo(props) {
     <div className="stack-small">
       <div className="c-cb">
         <input
-          id={props.id}
+          id={id}
           type="checkbox"
-          checked={props.completed}
-          onChange={() => props.toggleTaskCompleted(props.id)}
+          checked={completed}
+          onChange={() => toggleTaskCompleted(id)}
         />
-        <label className="todo-label" htmlFor={props.id}>
-          {props.name}
+        <label className="todo-label" htmlFor={id}>
+          {name}
         </label>
       </div>
       <div className="btn-group">
@@ -89,13 +96,13 @@ function Todo(props) {
           className="btn"
           onClick={startEditing}
           ref={editButtonRef}>
-          Edit <span className="visually-hidden">{props.name}</span>
+          Edit <span className="visually-hidden">{name}</span>
         </button>
         <button
           type="button"
           className="btn btn__danger"
-          onClick={() => props.deleteTask(props.id)}>
-          Delete <span className="visually-hidden">{props.name}</span>
+          onClick={() => deleteTask(id)}>
+          Delete <span className="visually-hidden">{name}</span>
         </button>
       </div>
     </div>
