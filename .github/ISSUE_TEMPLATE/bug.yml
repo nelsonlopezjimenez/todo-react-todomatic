@@ -1,36 +1,42 @@
 name: "Bug report"
-description: Report an unexpected problem or unintended behavior.
-labels: ["needs triage"]
+description: Something in the app does not work as it should.
+labels: ["bug"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ### Before you start
-
-        **Want to fix the problem yourself?** This project is open source and we welcome fixes and improvements from the community!
-
-        ↩ Check the project [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) guide to see how to get started.
-
-        ---
   - type: textarea
-    id: problem
+    id: steps
     attributes:
-      label: What information was incorrect, unhelpful, or incomplete?
+      label: Steps to reproduce
+      description: What did you do? Number each step.
+      placeholder: |
+        1. Click "Edit" on the "Sleep" task
+        2. Delete all the text
+        3. Click "Save"
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: What did you expect to see?
+      label: Expected result
+      description: What should have happened?
     validations:
       required: true
   - type: textarea
-    id: references
+    id: actual
     attributes:
-      label: Do you have any supporting links, references, or citations?
-      description: Link to information that helps us confirm your issue.
-  - type: textarea
-    id: more-info
+      label: Actual result
+      description: What happened instead? Add a screenshot or the error from the browser console if there is one.
+    validations:
+      required: true
+  - type: input
+    id: browser
     attributes:
-      label: Do you have anything more you want to share?
-      description: For example, steps to reproduce a bug, screenshots, screen recordings, or sample code
+      label: Browser and operating system
+      placeholder: Chrome 140 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Branch or commit
+      description: Run `git log --oneline -1` and paste the result.
+      placeholder: 3fd2cd05 refactor: destructure props in every component
