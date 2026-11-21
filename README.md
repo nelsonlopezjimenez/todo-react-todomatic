@@ -19,6 +19,8 @@ The project was modernized in steps. Each step has its own branch, and tags mark
 | `step-03-fixes`       | Bug fixes and current React patterns (one commit per fix)           |
 | `step-03-fixed` (tag) | End of step 3                                                       |
 | `step-04-project-files` | MDN-only files removed, contributing guide, templates, favicon    |
+| `step-04-done` (tag)  | End of step 4                                                       |
+| `step-05-tests`       | Vitest + React Testing Library tests, run in CI                     |
 
 ```bash
 git diff mdn-original main                       # everything changed since MDN
@@ -45,10 +47,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for branches, commit messages and code co
 | `npm run build`   | Build the production bundle into `dist/`               |
 | `npm run preview` | Serve the built `dist/` folder locally                 |
 | `npm run lint`    | Run ESLint on all `.js` / `.jsx` files                 |
+| `npm test`        | Run the tests once (Vitest + React Testing Library)    |
+| `npm run test:watch` | Re-run the tests whenever a file changes            |
 
 ## Deployment
 
-Pushing to `main` runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which builds the app and publishes it to GitHub Pages.
+Pushing to `main` runs [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which lints, tests and builds the app, then publishes it to GitHub Pages.
+If lint or tests fail, nothing is published.
 
 GitHub Pages serves project sites from `/<repo-name>/`, so the workflow sets `BASE_PATH` to that and [vite.config.js](vite.config.js) uses it as `base`.
 Locally `base` is `/`.
@@ -57,6 +62,7 @@ Locally `base` is `/`.
 
 - [React documentation](https://react.dev/)
 - [Vite documentation](https://vite.dev/guide/)
+- [Vitest](https://vitest.dev/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
 ## License
 

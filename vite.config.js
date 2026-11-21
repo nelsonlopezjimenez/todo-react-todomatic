@@ -7,4 +7,10 @@ export default defineConfig({
   // "/" locally. The deploy workflow sets BASE_PATH to "/<repo-name>/"
   // because GitHub Pages serves project sites from a subfolder.
   base: process.env.BASE_PATH ?? "/",
+  // https://vitest.dev/config/
+  test: {
+    // Simulated browser (document, window, focus) for React components
+    environment: "jsdom",
+    setupFiles: ["./src/setupTests.js"],
+  },
 })

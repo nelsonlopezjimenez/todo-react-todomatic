@@ -26,6 +26,8 @@ Use **npm only**, not yarn or pnpm: the project's lockfile is `package-lock.json
 | ----------------- | --------------------------------------------- |
 | `npm run dev`     | Start the dev server at http://localhost:3000 |
 | `npm run lint`    | Check the code with ESLint                    |
+| `npm test`        | Run the tests once                            |
+| `npm run test:watch` | Re-run the tests whenever a file changes   |
 | `npm run build`   | Build the production bundle into `dist/`      |
 | `npm run preview` | Serve the built `dist/` folder locally        |
 
@@ -71,8 +73,9 @@ The project's own history follows these rules. Run `git log` to see examples.
 ## Before you commit
 
 1. `npm run lint` passes with no errors or warnings.
-2. `npm run build` succeeds.
-3. You tried the change in the browser, **with the keyboard too**: Tab, Enter and Space must reach and operate everything.
+2. `npm test` passes.
+3. `npm run build` succeeds.
+4. You tried the change in the browser, **with the keyboard too**: Tab, Enter and Space must reach and operate everything.
 
 ## Code conventions
 
@@ -84,6 +87,20 @@ Follow the patterns already in `src/`:
 - Keep the accessibility features: every input has a `<label>`, buttons have
   `visually-hidden` text that names the task, and focus moves to a sensible
   element after Edit, Save, Cancel and Delete.
+
+## Tests
+
+Tests live next to the code they test, named `*.test.jsx` (see [src/App.test.jsx](src/App.test.jsx)).
+They use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/):
+find elements the way a user would, by role and accessible name, then act with `userEvent`:
+
+```jsx
+await user.click(screen.getByRole("button", { name: "Edit Sleep" }));
+expect(screen.getByLabelText("New name for Sleep")).toHaveFocus();
+```
+
+When you add a feature or fix a bug, add a test for it. A test that cannot find
+an element by its name often means a screen reader cannot either.
 
 ## Pull requests
 
