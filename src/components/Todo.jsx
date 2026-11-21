@@ -42,11 +42,11 @@ function Todo(props) {
   const editingTemplate = (
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label className="todo-label" htmlFor={props.id}>
+        <label className="todo-label" htmlFor={`${props.id}-edit`}>
           New name for {props.name}
         </label>
         <input
-          id={props.id}
+          id={`${props.id}-edit`}
           className="todo-text"
           type="text"
           value={newName}
