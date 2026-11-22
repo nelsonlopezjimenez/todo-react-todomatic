@@ -39,4 +39,4 @@ body:
     attributes:
       label: Branch or commit
       description: Run `git log --oneline -1` and paste the result.
-      placeholder: 3fd2cd05 refactor: destructure props in every component
+      placeholder: "3fd2cd05 refactor: destructure props in every component"
