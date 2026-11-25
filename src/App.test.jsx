@@ -64,6 +64,31 @@ describe("task list", () => {
     expect(input).toHaveValue("");
   });
 
+  it("adds a task with an email and clears both fields", async () => {
+    const { user } = renderApp();
+    const nameInput = screen.getByLabelText("What needs to be done?");
+    const emailInput = screen.getByLabelText("Email (optional)");
+
+    await user.type(nameInput, "Call the dentist");
+    await user.type(emailInput, "student@example.com");
+    await user.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(screen.getByRole("checkbox", { name: "Call the dentist" })).toBeInTheDocument();
+    expect(nameInput).toHaveValue("");
+    expect(emailInput).toHaveValue("");
+  });
+
+  it("accepts an empty email but not an invalid one", async () => {
+    const { user } = renderApp();
+    const emailInput = screen.getByLabelText("Email (optional)");
+
+    expect(emailInput).toHaveAttribute("type", "email");
+    expect(emailInput).toBeValid();
+
+    await user.type(emailInput, "not-an-email");
+    expect(emailInput).toBeInvalid();
+  });
+
   // MDN's exercise, left for students: see the NOTE in Form.jsx
   it.todo("does not add a task when the name is empty");
 });
