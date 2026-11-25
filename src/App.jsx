@@ -77,10 +77,16 @@ function App({ initialTasks }) {
     />
   ));
 
-  function addTask(name) {
+  function addTask(name, email) {
     // Create the task outside the updater: updaters must be pure,
-    // and nanoid() returns a different value on every call
-    const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
+    // and nanoid() returns a different value on every call.
+    // The email is stored with the task but not shown in the list.
+    const newTask = {
+      id: "todo-" + nanoid(),
+      name: name,
+      email: email,
+      completed: false,
+    };
     setTasks((prevTasks) => [...prevTasks, newTask]);
   }
 
