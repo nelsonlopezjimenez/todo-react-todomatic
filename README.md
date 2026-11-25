@@ -23,6 +23,7 @@ The project was modernized in steps. Each step has its own branch, and tags mark
 | `step-05-tests`       | Vitest + React Testing Library tests, run in CI                     |
 | `step-05-done` (tag)  | End of step 5                                                       |
 | `fix/issue-template-yaml` | Fix: quote the commit placeholder in the bug report template    |
+| `step-06-form-email`  | Optional email field; Form.jsx shows controlled inputs and a form action |
 | `todomatic-final-exam` (local only) | The final exam starting point, see [Final exam](#final-exam) |
 
 ```bash
